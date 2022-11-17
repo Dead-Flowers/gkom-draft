@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "gkom"
+version = "0.1.0"
+description = ""
+authors = ["lorlen <filip.lew975@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+moderngl = "^5.7.2"
+moderngl-window = "^2.4.2"
+typed-settings = "^1.1.1"
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.10.0"
+isort = "^5.10.1"
+pre-commit = "^2.20.0"
+
+[tool.poetry.scripts]
+start = "gkom:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
