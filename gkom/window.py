@@ -4,13 +4,14 @@ from typing import Any
 
 import moderngl
 import typed_settings as ts
-from moderngl_window import WindowConfig, geometry
+from moderngl_window import WindowConfig
 from moderngl_window.context.base import KeyModifiers
 from pyrr import Matrix44
 
 from gkom.camera import Camera
 from gkom.config import Config, Object
 from gkom.utils.shader import get_shaders
+from gkom.utils.structs import Light
 
 
 class Model:
@@ -24,7 +25,7 @@ class Model:
 
 
 class GkomWindowConfig(WindowConfig):
-    gl_version = (3, 3)
+    gl_version = (4, 6)
     title = "GKOM"
 
     resource_root_dir = (Path(__file__).parent.parent / "resources").resolve()
@@ -43,10 +44,10 @@ class GkomWindowConfig(WindowConfig):
 
         self.camera = Camera(self.aspect_ratio)
 
-        self.model_load()
+        self.load_config()
         self.init_uniforms()
 
-    def model_load(self):
+    def load_config(self):
         self.models = []
         for obj in self.config.object:
             self.models.append(
@@ -56,6 +57,14 @@ class GkomWindowConfig(WindowConfig):
                     self.program,
                 )
             )
+
+        lights = bytearray()
+
+        for light in self.config.light:
+            lights += Light(light.position, light.diffuse, light.specular).pack()
+
+        self.lights_buffer = self.ctx.buffer(lights)
+        self.lights_buffer.bind_to_storage_buffer(0)
 
     def init_uniforms(self):
         self.transform = self.program["transform"]
@@ -72,7 +81,7 @@ class GkomWindowConfig(WindowConfig):
             self.color.value = model.color
             self.transform.write((self.camera.transform * model_matrix).astype("f4"))
 
-            model.vao.render()
+            model.vao.render(moderngl.TRIANGLE_STRIP)
 
     def key_event(self, key: Any, action: Any, modifiers: KeyModifiers):
         if action == self.wnd.keys.ACTION_PRESS:
