@@ -279,6 +279,17 @@ multipledispatch = "*"
 numpy = "*"
 
 [[package]]
+name = "pywavefront"
+version = "1.3.3"
+description = "Python library for importing Wavefront .obj files"
+category = "main"
+optional = false
+python-versions = ">=3.4"
+
+[package.extras]
+visualization = ["pyglet"]
+
+[[package]]
 name = "pyyaml"
 version = "6.0"
 description = "YAML parser and emitter for Python"
@@ -364,7 +375,7 @@ testing = ["coverage (>=6.2)", "coverage-enable-subprocess (>=1)", "flaky (>=3.7
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "ecad8dcd66560a04a7b5d8e70e20c07b0c147b3be7fd54d888873e0f5ebd9684"
+content-hash = "3519746fbf487c336034d6ba935a2f17d178a113de9c014533e8f33e2376611a"
 
 [metadata.files]
 attrs = [
@@ -662,6 +673,9 @@ pyglet = [
 pyrr = [
     {file = "pyrr-0.10.3-py3-none-any.whl", hash = "sha256:d8af23fb9bb29262405845e1c98f7339fbba5e49323b98528bd01160a75c65ac"},
     {file = "pyrr-0.10.3.tar.gz", hash = "sha256:3c0f7b20326e71f706a610d58f2190fff73af01eef60c19cb188b186f0ec7e1d"},
+]
+pywavefront = [
+    {file = "PyWavefront-1.3.3-py3-none-any.whl", hash = "sha256:ec79cadd046b168434b01031e574f4105f821d06cb8cf754801e4dc18076bbeb"},
 ]
 pyyaml = [
     {file = "PyYAML-6.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:d4db7c7aef085872ef65a8fd7d6d09a14ae91f691dec3e87ee5ee0539d516f53"},

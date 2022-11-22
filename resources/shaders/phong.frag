@@ -5,14 +5,14 @@ in vec3 frag_normal;
 
 out vec4 frag_color;
 
-vec3 light_position = vec3(4, 0, -5);
+vec3 light_position = vec3(4.0, 0.0, -5.0);
 vec3 light_diffuse = vec3(1.0);
 vec3 light_ambient = light_diffuse * 0.1;
 vec3 light_specular = light_diffuse * 0.5;
 
 vec3 obj_diffuse = vec3(0.0, 0.5, 0.5);
 vec3 obj_specular = vec3(0.5);
-float obj_shininess = 32;
+float obj_shininess = 32.0;
 
 uniform vec3 camera_position;
 
