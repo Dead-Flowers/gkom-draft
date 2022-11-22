@@ -4,7 +4,7 @@ model = "cube"
 position = [1.0, 1.0, 1.0]
 rotation = [20.0, 60.0, 0.0]
 scale = [1.0, 1.0, 1.0]
-color = [0.0, 0.5, 0.5]
+color = [1.0, 0.6, 0.8]
 
 [[gkom.light]]
 type = "point"

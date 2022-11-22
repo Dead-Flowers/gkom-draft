@@ -13,8 +13,9 @@ from  gkom.camera import Camera
 from  gkom.utils.shader import get_shaders
 
 class Model:
-    def __init__(self, obj: Object, model):
+    def __init__(self, obj: Object, model, prog):
         self.model = model
+        self.vao = model.root_nodes[0].mesh.vao.instance(prog)
         self.position = obj.position
         self.rotation = obj.rotation
         self.scale = obj.scale
@@ -46,23 +47,23 @@ class GkomWindowConfig(WindowConfig):
     def model_load(self):
         self.models = []
         for obj in self.config.object:
-            self.models.append(Model(obj, self.load_scene(self.resource_dir / f'{obj.model}.obj')))
+            self.models.append(Model(obj, self.load_scene(self.resource_dir / f'{obj.model}.obj'), self.program))
 
     def init_uniforms(self):
         self.transform = self.program["transform"]
-
+        self.color = self.program["Color"]
+        
     def render(self, time: float, frame_time: float):
         for model in self.models:
             translation = Matrix44.from_translation(model.position, dtype='f4')
             rotation = Matrix44.from_eulers(model.rotation, dtype='f4')
             model_matrix = translation * rotation
             camera_matrix = self.camera.look_at_matrix() * model_matrix
-            
-            model.model.draw(
-                projection_matrix=self.camera.look_at_matrix(),
-                camera_matrix=camera_matrix,
-                time=time
-            )
+
+            self.color.value = model.color
+            self.transform.write(camera_matrix.astype('f4'))
+        
+            model.vao.render()
         
     def key_event(self, key: Any, action: Any, modifiers: KeyModifiers):
         if action == self.wnd.keys.ACTION_PRESS:

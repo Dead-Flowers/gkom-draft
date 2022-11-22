@@ -10,7 +10,7 @@ class Object:
     rotation: tuple[float, float, float]
     scale: tuple[float, float, float]
     color: tuple[float, float, float]
-
+    shininess: float
 
 @ts.settings
 class Light:

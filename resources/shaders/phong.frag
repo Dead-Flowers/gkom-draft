@@ -2,18 +2,19 @@
 
 in vec3 frag_position;
 in vec3 frag_normal;
+in vec3 object_color;
 
-out vec4 frag_color;
+out vec4 color;
 
-vec3 light_position = vec3(4.0, 0.0, -5.0);
+vec3 light_position = vec3(2.0, 0.0, -2.0);
 vec3 light_diffuse = vec3(1.0);
-vec3 light_ambient = light_diffuse * 0.1;
-vec3 light_specular = light_diffuse * 0.5;
+vec3 light_ambient = light_diffuse * 0.5;
+vec3 light_specular = light_diffuse * 0.7;
 
-vec3 obj_diffuse = vec3(0.0, 0.5, 0.5);
+vec3 obj_diffuse = vec3(0.1, 0.5, 0.33);
 vec3 obj_specular = vec3(0.5);
-float obj_shininess = 32.0;
 
+uniform float obj_shininess;
 uniform vec3 camera_position;
 
 vec3 phong() {
@@ -29,5 +30,5 @@ vec3 phong() {
 }
 
 void main() {
-    frag_color = vec4(phong(), 1.0);
+    color = vec4(phong()*object_color, 1.0);
 }
