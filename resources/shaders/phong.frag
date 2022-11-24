@@ -31,7 +31,7 @@ vec3 pointLight(Light light, vec3 camera_position, vec3 object_color, float shin
 
 	vec3 ambient = light_ambient * object_color;
     vec3 diffuse = max(dot(frag_normal, light_dir), 0.0) * light.diffuse * object_color;
-    vec3 specular = pow(max(dot(view_dir, reflect_dir), 0.0), 8.0) * light.specular * object_color;
+    vec3 specular = pow(max(dot(view_dir, reflect_dir), 0.0), shininess) * light.specular * object_color;
 
     return ambient + diffuse + specular;
 }

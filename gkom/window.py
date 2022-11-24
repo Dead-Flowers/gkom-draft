@@ -22,6 +22,7 @@ class Model:
         self.rotation = obj.rotation
         self.scale = obj.scale
         self.color = obj.color
+        self.shininess = obj.shininess
 
 
 class GkomWindowConfig(WindowConfig):
@@ -70,6 +71,8 @@ class GkomWindowConfig(WindowConfig):
         self.transform = self.program["transform"]
         self.scale = self.program["scale"]
         self.color = self.program["Color"]
+        self.camera_position = self.program["camera_position"]
+        self.shininess = self.program["shininess"]
 
     def render(self, time: float, frame_time: float):
         self.ctx.clear(0.4, 0.4, 0.4)         
@@ -80,7 +83,8 @@ class GkomWindowConfig(WindowConfig):
             model_matrix = translation * rotation
 
             self.camera.move(self.wnd.keys, self.keys, frame_time)
-
+    
+            self.camera_position.write(self.camera.position)
             self.color.value = model.color
             self.transform.write((self.camera.transform * model_matrix).astype("f4"))
             self.scale.write(Matrix44(
@@ -89,6 +93,7 @@ class GkomWindowConfig(WindowConfig):
                 [0,0,model.scale[2],0],
                 [0,0,0,1]]
             ).astype("f4"))
+            self.shininess.value = model.shininess
 
             model.vao.render(moderngl.TRIANGLES)
 
