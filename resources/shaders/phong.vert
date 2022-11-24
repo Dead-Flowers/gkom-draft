@@ -11,10 +11,11 @@ out vec3 frag_normal;
 out vec3 object_color;
 
 uniform mat4 transform;
+uniform mat4 scale;
 
 void main() {
     frag_position = in_position;
     frag_normal = normalize(in_normal);
     object_color = Color;
-    gl_Position = transform * vec4(in_position, 1.0);
+    gl_Position = transform * scale * vec4(in_position, 1.0);
 }

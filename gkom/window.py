@@ -68,6 +68,7 @@ class GkomWindowConfig(WindowConfig):
 
     def init_uniforms(self):
         self.transform = self.program["transform"]
+        self.scale = self.program["scale"]
         self.color = self.program["Color"]
 
     def render(self, time: float, frame_time: float):
@@ -82,6 +83,12 @@ class GkomWindowConfig(WindowConfig):
 
             self.color.value = model.color
             self.transform.write((self.camera.transform * model_matrix).astype("f4"))
+            self.scale.write(Matrix44(
+                [[model.scale[0],0,0,0],
+                [0,model.scale[1],0,0],
+                [0,0,model.scale[2],0],
+                [0,0,0,1]]
+            ).astype("f4"))
 
             model.vao.render(moderngl.TRIANGLES)
 

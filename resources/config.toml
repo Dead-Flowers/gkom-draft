@@ -3,18 +3,35 @@
 model = "cube"
 position = [1.0, 1.0, 1.0]
 rotation = [20.0, 60.0, 0.0]
+scale = [2.0, 1.0, 0.5]
+color = [1.0, 0.6, 0.8]
+shininess = 1
+
+[[gkom.object]]
+model = "cube"
+position = [8.0, 8.0, 8.0]
+rotation = [0.0, 0.0, 0.0]
 scale = [1.0, 1.0, 1.0]
 color = [1.0, 0.6, 0.8]
 shininess = 1
 
+[[gkom.object]]
+model = "cube"
+position = [-8.0, -8.0, 8.0]
+rotation = [0.0, 0.0, 0.0]
+scale = [1.0, 1.0, 1.0]
+color = [1.0, 0.6, 0.8]
+shininess = 1
+
+
 [[gkom.light]]
 type = "point"
-position = [4.0, 4.0, 4.0]
+position = [8.0, 8.0, 8.0]
 diffuse = [0.4, 0.3, 0.8]
 specular = [0.5, 0.4, 0.5]
 
 [[gkom.light]]
 type = "point"
-position = [-4.0, -4.0, 2.0]
+position = [-8.0, -8.0, 8.0]
 diffuse = [0.1, 0.5, 0.6]
 specular = [0.2, 0.5, 0.8]
