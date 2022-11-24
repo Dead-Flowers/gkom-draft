@@ -71,6 +71,8 @@ class GkomWindowConfig(WindowConfig):
         self.color = self.program["Color"]
 
     def render(self, time: float, frame_time: float):
+        self.ctx.clear(1.0, 1.0, 1.0)         
+        self.ctx.enable(moderngl.DEPTH_TEST | self.ctx.CULL_FACE)
         for model in self.models:
             translation = Matrix44.from_translation(model.position, dtype="f4")
             rotation = Matrix44.from_eulers(model.rotation, dtype="f4")
@@ -81,7 +83,7 @@ class GkomWindowConfig(WindowConfig):
             self.color.value = model.color
             self.transform.write((self.camera.transform * model_matrix).astype("f4"))
 
-            model.vao.render(moderngl.TRIANGLE_STRIP)
+            model.vao.render(moderngl.TRIANGLES)
 
     def key_event(self, key: Any, action: Any, modifiers: KeyModifiers):
         if action == self.wnd.keys.ACTION_PRESS:
