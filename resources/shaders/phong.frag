@@ -31,13 +31,15 @@ vec3 pointLight(Light light, vec3 camera_position, vec3 object_color, float shin
 
 	vec3 ambient = light_ambient * object_color;
     vec3 diffuse = max(dot(frag_normal, light_dir), 0.0) * light.diffuse * object_color;
-    vec3 specular = pow(max(dot(view_dir, reflect_dir), 0.0), shininess) * light.specular * object_color;
+    vec3 specular = pow(max(dot(view_dir, reflect_dir), 0.0), 30.0) * light.specular * object_color;
 
     return ambient + diffuse + specular;
 }
 
 void main() {
+    vec3 temp = vec3(0.0);
     for (int i = 0; i < lights.length(); i++) {
-        color = vec4(pointLight(lights[i], camera_position, object_color, shininess), 1.0);
+        temp += pointLight(lights[i], camera_position, object_color, shininess);
     }
+    color = vec4(temp, 1.0);
 }
