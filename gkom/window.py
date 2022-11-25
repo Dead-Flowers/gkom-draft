@@ -6,7 +6,7 @@ import moderngl
 import typed_settings as ts
 from moderngl_window import WindowConfig
 from moderngl_window.context.base import KeyModifiers
-from pyrr import Matrix44
+from pyrr import Matrix44, Vector3
 
 from gkom.camera import Camera
 from gkom.config import Config, Object
@@ -28,6 +28,7 @@ class Model:
 class GkomWindowConfig(WindowConfig):
     gl_version = (4, 6)
     title = "GKOM"
+    cursor = False
 
     resource_root_dir = (Path(__file__).parent.parent / "resources").resolve()
     resource_dir = resource_root_dir / "models"
@@ -43,7 +44,8 @@ class GkomWindowConfig(WindowConfig):
         shaders = get_shaders(self.shader_dir)
         self.program = shaders["phong"].create_program(self.ctx)
 
-        self.camera = Camera(self.aspect_ratio)
+        self.camera = Camera(self.aspect_ratio, position=Vector3((0.0, 5.0, 5.0)))
+        self.wnd.mouse_exclusivity = True
 
         self.load_config()
         self.init_uniforms()
@@ -69,30 +71,24 @@ class GkomWindowConfig(WindowConfig):
 
     def init_uniforms(self):
         self.transform = self.program["transform"]
-        self.scale = self.program["scale"]
         self.color = self.program["Color"]
         self.camera_position = self.program["camera_position"]
         self.shininess = self.program["shininess"]
 
     def render(self, time: float, frame_time: float):
-        self.ctx.clear(0.4, 0.4, 0.4)         
+        self.ctx.clear(0.4, 0.4, 0.4)
         self.ctx.enable(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
         for model in self.models:
             translation = Matrix44.from_translation(model.position, dtype="f4")
             rotation = Matrix44.from_eulers(model.rotation, dtype="f4")
-            model_matrix = translation * rotation
+            scale = Matrix44.from_scale(model.scale, dtype="f4")
+            model_matrix = translation * rotation * scale
 
             self.camera.move(self.wnd.keys, self.keys, frame_time)
-    
-            self.camera_position.write(self.camera.position)
+
+            self.camera_position.write(self.camera.position.astype("f4"))
             self.color.value = model.color
             self.transform.write((self.camera.transform * model_matrix).astype("f4"))
-            self.scale.write(Matrix44(
-                [[model.scale[0],0,0,0],
-                [0,model.scale[1],0,0],
-                [0,0,model.scale[2],0],
-                [0,0,0,1]]
-            ).astype("f4"))
             self.shininess.value = model.shininess
 
             model.vao.render(moderngl.TRIANGLES)

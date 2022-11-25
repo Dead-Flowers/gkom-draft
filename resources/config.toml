@@ -1,46 +1,25 @@
+[[gkom.object]]
+model = "plane"
+scale = [10.0, 10.0, 10.0]
+color = [0.0, 0.5, 0.0]
 
 [[gkom.object]]
-model = "cube"
-position = [1.0, 1.0, 1.0]
-rotation = [20.0, 60.0, 0.0]
-scale = [2.0, 1.0, 0.5]
-color = [1.0, 0.6, 0.8]
-shininess = 4
+model = "cylinder"
+position = [2.0, 2.5, 2.0]
+scale = [1.0, 5.0, 1.0]
+color = [0.545, 0.271, 0.075]
 
 [[gkom.object]]
-model = "cube"
-position = [4.0, 8.0, 8.0]
-rotation = [0.0, 0.0, 0.0]
-scale = [1.0, 1.0, 1.0]
-color = [1.0, 0.6, 0.8]
-shininess = 8
-
-[[gkom.object]]
-model = "cube"
-position = [-4.0, -8.0, 8.0]
-rotation = [0.0, 0.0, 0.0]
+model = "sphere"
+position = [2.0, 6.0, 2.0]
 scale = [2.0, 2.0, 2.0]
-color = [1.0, 0.6, 0.8]
-shininess = 16
+color = [0.0, 0.5, 0.0]
 
 [[gkom.object]]
 model = "cube"
-position = [16.0, 16.0, 16.0]
-rotation = [0.0, 0.0, 0.0]
-scale = [2.0, 2.0, 2.0]
-color = [1.0, 0.6, 0.8]
-shininess = 32
-
-
+position = [-3.0, 1.0, -3.0]
+color = [0.5, 0.5, 0.5]
 
 [[gkom.light]]
 type = "point"
-position = [8.0, 8.0, 8.0]
-diffuse = [1.0, 0.0, 0.0]
-specular = [1.0, 0.0, 0.0]
-
-[[gkom.light]]
-type = "point"
-position = [-8.0, -8.0, 8.0]
-diffuse = [0.0, 0.0, 1.0]
-specular = [0.0, 0.0, 1.0]
+position = [3.0, 10.0, 3.0]

@@ -5,7 +5,7 @@ from moderngl_window.context.base import BaseKeys
 from pyrr import Matrix44, Vector3
 
 SPEED = 0.1
-MOUSE_SENSITIVITY = 0.015
+MOUSE_SENSITIVITY = 0.01
 
 
 def clamp(value, min, max):
@@ -28,7 +28,7 @@ class Camera:
         near: float = 0.1,
         far: float = 1000.0,
     ) -> None:
-        self.position = position or Vector3()
+        self.position = position if position is not None else Vector3()
         self.yaw = math.radians(yaw)
         self.pitch = math.radians(pitch)
         self.up = self.world_up = up.normalized

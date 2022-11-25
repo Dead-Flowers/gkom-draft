@@ -6,18 +6,19 @@ import typed_settings as ts
 @ts.settings
 class Object:
     model: str
-    position: tuple[float, float, float]
-    rotation: tuple[float, float, float]
-    scale: tuple[float, float, float]
-    color: tuple[float, float, float]
-    shininess: float
+    position: tuple[float, float, float] = (0.0, 0.0, 0.0)
+    rotation: tuple[float, float, float] = (0.0, 0.0, 0.0)
+    scale: tuple[float, float, float] = (1.0, 1.0, 1.0)
+    color: tuple[float, float, float] = (1.0, 1.0, 1.0)
+    shininess: float = 32
+
 
 @ts.settings
 class Light:
     type: Literal["point"]
-    position: tuple[float, float, float]
-    diffuse: tuple[float, float, float]
-    specular: tuple[float, float, float]
+    position: tuple[float, float, float] = (0.0, 0.0, 0.0)
+    diffuse: tuple[float, float, float] = (1.0, 1.0, 1.0)
+    specular: tuple[float, float, float] = (1.0, 1.0, 1.0)
 
 
 @ts.settings
