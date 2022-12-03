@@ -64,7 +64,7 @@ class GkomWindowConfig(WindowConfig):
         lights = bytearray()
 
         for light in self.config.light:
-            lights += Light(light.position, light.diffuse, light.specular).pack()
+            lights += Light(light.position, light.diffuse, light.specular, light.direction).pack()
 
         self.lights_buffer = self.ctx.buffer(lights)
         self.lights_buffer.bind_to_storage_buffer(0)

@@ -7,6 +7,8 @@ struct Light {
     // float padding
     vec3 specular;
     // float padding
+    vec3 direction;
+    // float padding
 };
 
 in vec3 frag_position;
@@ -28,13 +30,14 @@ layout(std430, binding = 0) buffer light_buf {
 };
 
 vec3 pointLight(Light light, vec3 camera_position, vec3 object_color, float shininess) {
-    vec3 light_dir = normalize(light.position - frag_position);
+    vec3 light_dir = normalize(-light.direction);
+    // vec3 light_dir = normalize(light.position - frag_position);
     vec3 view_dir = normalize(camera_position - frag_position);
     vec3 reflect_dir = normalize(reflect(-light_dir, frag_normal));
 
     float distance = length(light.position - frag_position);
-    float attenuation = 1.0 / (att_constant + att_linear * distance + att_quadratic * distance * distance);
-
+    // float attenuation = 1.0 / (att_constant + att_linear * distance + att_quadratic * distance * distance);
+    float attenuation = 1.0;
 	vec3 ambient = light_ambient * object_color * attenuation;
     vec3 diffuse = max(dot(frag_normal, light_dir), 0.0) * light.diffuse * object_color * attenuation;
     vec3 specular = pow(max(dot(view_dir, reflect_dir), 0.0), shininess) * light.specular * object_color * attenuation;

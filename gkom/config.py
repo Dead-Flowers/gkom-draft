@@ -19,7 +19,7 @@ class Light:
     position: tuple[float, float, float] = (0.0, 0.0, 0.0)
     diffuse: tuple[float, float, float] = (1.0, 1.0, 1.0)
     specular: tuple[float, float, float] = (1.0, 1.0, 1.0)
-
+    direction: tuple[float, float, float] = (0.0, 0.0, 0.0)
 
 @ts.settings
 class Config:
