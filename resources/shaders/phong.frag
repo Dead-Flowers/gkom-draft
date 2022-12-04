@@ -33,8 +33,7 @@ layout(std430, binding = 0) buffer light_buf {
 };
 
 float shadow(vec4 shadow_coords) {
-    vec3 proj_coords = shadow_coords.xyz / shadow_coords.w;
-    // proj_coords = proj_coords * 0.5 + 0.5;
+    vec3 proj_coords = shadow_coords.xyz;
     float closest_depth = texture(shadowMap, proj_coords.xy).r;
     float current_depth = proj_coords.z - 0.005;
     return current_depth > closest_depth ? 0.38 : 1.0;
