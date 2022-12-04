@@ -66,6 +66,6 @@ class Light:
             -20, 20, -20, 20, -20, 40, dtype="f4"
         )
         depth_view = Matrix44.look_at(
-            self.position, object_position, (0, 1, 0), dtype="f4"
+            Vector3(self.position), object_position, (0, 1, 0), dtype="f4"
         )
         return depth_projection * depth_view
