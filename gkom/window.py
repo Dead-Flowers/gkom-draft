@@ -86,7 +86,7 @@ class GkomWindowConfig(WindowConfig):
         self.lights_shadow.bind_to_storage_buffer(1)
 
     def init_shadow_map(self):
-        offscreen_size = self.window_size
+        offscreen_size = self.config.shadow_map_resoultion
         self.offscreen_depth = self.ctx.depth_texture(offscreen_size)
         self.offscreen_depth.filter = (moderngl.NEAREST, moderngl.NEAREST)
         self.offscreen_depth.repeat_x = True
@@ -118,7 +118,7 @@ class GkomWindowConfig(WindowConfig):
         for i, model in enumerate(self.models):
             self.model_shadow_mvps[i] = bytearray()
             for light in self.lights:
-                shadow_mvp = light.transform(Vector3(model.position)) * model.transform
+                shadow_mvp = light.transform(Vector3(light.direction)) * model.transform
                 self.shadow_mvp.write(shadow_mvp.astype("f4"))
 
                 self.model_shadow_mvps[i] += (

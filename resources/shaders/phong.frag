@@ -26,7 +26,7 @@ const vec3 light_ambient = vec3(0.1);
 const float att_constant = 0.1;
 const float att_linear = 0.05;
 const float att_quadratic = 0.01;
-float bias = 0.005;
+float bias = 0.006;
 
 layout(std430, binding = 0) buffer light_buf {
     Light lights[];
