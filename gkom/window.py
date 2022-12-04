@@ -86,7 +86,7 @@ class GkomWindowConfig(WindowConfig):
         self.lights_shadow.bind_to_storage_buffer(1)
 
     def init_shadow_map(self):
-        offscreen_size = self.config.shadow_map_resoultion
+        offscreen_size = self.window_size
         self.offscreen_depth = self.ctx.depth_texture(offscreen_size)
         self.offscreen_depth.filter = (moderngl.NEAREST, moderngl.NEAREST)
         self.offscreen_depth.repeat_x = True

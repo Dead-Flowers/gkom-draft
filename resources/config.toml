@@ -1,6 +1,3 @@
-[gkom]
-shadow_map_resoultion = [1024, 1024]
-
 [[gkom.object]]
 model = "plane"
 scale = [10.0, 10.0, 10.0]
