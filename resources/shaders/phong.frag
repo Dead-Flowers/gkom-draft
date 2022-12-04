@@ -28,15 +28,30 @@ const float att_linear = 0.05;
 const float att_quadratic = 0.01;
 float bias = 0.006;
 
+vec2 poissonDisk[4] = vec2[](
+  vec2( -0.94201624, -0.39906216 ),
+  vec2( 0.94558609, -0.76890725 ),
+  vec2( -0.094184101, -0.92938870 ),
+  vec2( 0.34495938, 0.29387760 )
+);
+
+
 layout(std430, binding = 0) buffer light_buf {
     Light lights[];
 };
 
 float shadow(vec4 shadow_coords) {
+    float visibility = 1.0;
     vec3 proj_coords = shadow_coords.xyz;
-    float closest_depth = texture(shadowMap, proj_coords.xy).r;
     float current_depth = proj_coords.z - 0.005;
-    return current_depth > closest_depth ? 0.38 : 1.0;
+    for (int i=0; i<4; i++) {
+        float closest_depth = texture(shadowMap, proj_coords.xy + poissonDisk[i]/600.0).r;
+        if (current_depth > closest_depth) {
+            visibility -= 0.16;
+        }
+    }
+    return visibility;
+    // return current_depth > closest_depth ? 0.38 : 1.0;
 }
 
 vec3 pointLight(Light light, vec4 shadow_coords, vec3 camera_position, vec3 object_color, float shininess) {
