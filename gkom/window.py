@@ -81,10 +81,10 @@ class GkomWindowConfig(WindowConfig):
         self.lights_buffer = self.ctx.buffer(lights)
         self.lights_buffer.bind_to_storage_buffer(0)
         
-        self.lights_shadow = self.ctx.buffer(bytearray([0]*192))
+        self.lights_shadow = self.ctx.buffer(bytearray([0]*64*len(self.config.light)))
         self.lights_shadow.bind_to_storage_buffer(1)
 
-        self.shadow_cord_buf = self.ctx.buffer(bytearray(Vector4().tobytes()*len(self.config.light)))
+        self.shadow_cord_buf = self.ctx.buffer(bytearray([0]*16*len(self.config.light)))
         self.shadow_cord_buf.bind_to_storage_buffer(2)
 
     def init_shoadow_map(self):
@@ -111,7 +111,7 @@ class GkomWindowConfig(WindowConfig):
 
     def render(self, time: float, frame_time: float):
         self.ctx.clear(0.4, 0.4, 0.4)
-        self.ctx.enable(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
+        self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
         
         # Pass 1
         self.offscreen.clear()
@@ -128,7 +128,7 @@ class GkomWindowConfig(WindowConfig):
             light_shadow += matrix44.multiply(BIAS_MATRIX, depth_mvp).astype('f4').tobytes()
 
             for model  in self.models:
-                model.shadow_vao.render()
+                model.shadow_vao.render(moderngl.TRIANGLES)
 
         self.lights_shadow = self.ctx.buffer(light_shadow)
         self.lights_shadow.bind_to_storage_buffer(1)
