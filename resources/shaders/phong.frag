@@ -34,9 +34,9 @@ layout(std430, binding = 0) buffer light_buf {
 
 float shadow(vec4 shadow_coords) {
     vec3 proj_coords = shadow_coords.xyz / shadow_coords.w;
-    proj_coords = proj_coords * 0.5 + 0.5;
+    // proj_coords = proj_coords * 0.5 + 0.5;
     float closest_depth = texture(shadowMap, proj_coords.xy).r;
-    float current_depth = proj_coords.z;
+    float current_depth = proj_coords.z - 0.005;
     return current_depth > closest_depth ? 0.0 : 1.0;
 }
 
@@ -53,8 +53,7 @@ vec3 pointLight(Light light, vec4 shadow_coords, vec3 camera_position, vec3 obje
 	vec3 ambient = light_ambient * object_color * attenuation;
     vec3 diffuse = max(dot(frag_normal, light_dir), 0.0) * light.diffuse * object_color * attenuation;
     vec3 specular = pow(max(dot(view_dir, reflect_dir), 0.0), shininess) * light.specular * object_color * attenuation;
-
-    return ambient + shadow * (diffuse + specular);
+    return shadow * (ambient + diffuse + specular);
 }
 
 void main() {

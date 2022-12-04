@@ -33,9 +33,3 @@ scale = [3.0, 0.5, 3.0]
 type = "point"
 position = [10.0, 5.0, 10.0]
 direction = [-1.0, -7.5, -1.0]
-
-[[gkom.object]]
-model = "cube"
-position = [3.0, 100.0, 3.0]
-color = [1.0, 0.0, 0.0]
-scale = [3.0, 0.5, 3.0]
