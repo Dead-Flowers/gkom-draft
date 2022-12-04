@@ -84,8 +84,8 @@ class GkomWindowConfig(WindowConfig):
         self.lights_shadow = self.ctx.buffer(bytearray([0]*192))
         self.lights_shadow.bind_to_storage_buffer(1)
 
-        self.lights_shadow = self.ctx.buffer(bytearray(Vector4().tobytes()*len(self.config.light)))
-        self.lights_shadow.bind_to_storage_buffer(2)
+        self.shadow_cord_buf = self.ctx.buffer(bytearray(Vector4().tobytes()*len(self.config.light)))
+        self.shadow_cord_buf.bind_to_storage_buffer(2)
 
     def init_shoadow_map(self):
         offscreen_size = self.config.shadow_map_resoultion
@@ -132,6 +132,8 @@ class GkomWindowConfig(WindowConfig):
 
         self.lights_shadow = self.ctx.buffer(light_shadow)
         self.lights_shadow.bind_to_storage_buffer(1)
+
+        shadows_cords = self.shadow_cord_buf.read()
 
         # Pass 2 render scene
         self.wnd.use()

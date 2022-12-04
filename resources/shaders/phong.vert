@@ -8,7 +8,7 @@ in vec2 in_texcoord_0;
 
 out vec3 frag_position;
 out vec3 frag_normal;
-out vec3 object_color;
+out vec3 object_color; 
 
 uniform mat4 transform;
 
