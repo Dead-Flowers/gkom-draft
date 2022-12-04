@@ -21,6 +21,7 @@ class Light:
     specular: tuple[float, float, float] = (1.0, 1.0, 1.0)
     direction: tuple[float, float, float] = (0.0, 0.0, 0.0)
 
+
 @ts.settings
 class Config:
     object: list[Object]
