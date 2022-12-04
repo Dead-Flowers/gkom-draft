@@ -25,3 +25,4 @@ class Light:
 class Config:
     object: list[Object]
     light: list[Light]
+    shadow_map_resoultion: tuple[int, int]

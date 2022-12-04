@@ -12,9 +12,20 @@ out vec3 object_color;
 
 uniform mat4 transform;
 
+layout(std430, binding = 1) buffer shadow_buf {
+    mat4 lights_shadow_bias[];
+};
+
+layout(std430, binding = 2) buffer shadow_cord_buf {
+    vec4 shadow_cord[];
+};
+
 void main() {
     frag_position = in_position;
     frag_normal = normalize(in_normal);
     object_color = Color;
     gl_Position = transform * vec4(in_position, 1.0);
+    for (int i = 0; i < shadow_cord.length(); i++) {
+        shadow_cord[i] = lights_shadow_bias[i] * vec4(in_position, 1.0);
+    }
 }

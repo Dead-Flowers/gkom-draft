@@ -8,7 +8,6 @@ struct Light {
     vec3 specular;
     // float padding
     vec3 direction;
-    // float padding
 };
 
 in vec3 frag_position;
@@ -19,14 +18,20 @@ out vec4 color;
 
 uniform float shininess;
 uniform vec3 camera_position;
+uniform sampler2D shadowMap;
 
 const vec3 light_ambient = vec3(0.1);
 const float att_constant = 0.1;
 const float att_linear = 0.05;
 const float att_quadratic = 0.01;
+float bias = 0.005;
 
 layout(std430, binding = 0) buffer light_buf {
     Light lights[];
+};
+
+layout(std430, binding = 2) buffer shadow_cord_buf {
+    vec4 shadow_cord[];
 };
 
 vec3 pointLight(Light light, vec3 camera_position, vec3 object_color, float shininess) {
@@ -48,7 +53,11 @@ vec3 pointLight(Light light, vec3 camera_position, vec3 object_color, float shin
 void main() {
     vec3 temp = vec3(0.0);
     for (int i = 0; i < lights.length(); i++) {
-        temp += pointLight(lights[i], camera_position, object_color, shininess);
+        float visibility = 1.0;
+        if (texture(shadowMap, shadow_cord[i].xy ).r <  shadow_cord[i].z - bias){
+            visibility = 0.1;
+        }
+        temp += visibility * pointLight(lights[i], camera_position, object_color, shininess);
     }
     color = vec4(temp, 1.0);
 }
