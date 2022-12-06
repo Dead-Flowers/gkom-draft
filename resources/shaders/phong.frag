@@ -20,7 +20,7 @@ out vec4 color;
 
 uniform float shininess;
 uniform vec3 camera_position;
-uniform sampler2D shadowMap;
+uniform sampler2D shadowMaps[10];
 
 const vec3 light_ambient = vec3(0.1);
 const float att_constant = 0.1;
@@ -40,12 +40,12 @@ layout(std430, binding = 0) buffer light_buf {
     Light lights[];
 };
 
-float shadow(vec4 shadow_coords) {
+float shadow(sampler2D shadow_map, vec4 shadow_coords) {
     float visibility = 1.0;
     vec3 proj_coords = shadow_coords.xyz;
     float current_depth = proj_coords.z - 0.005;
     for (int i=0; i<4; i++) {
-        float closest_depth = texture(shadowMap, proj_coords.xy + poissonDisk[i]/800.0).r;
+        float closest_depth = texture(shadow_map, proj_coords.xy + poissonDisk[i]/800.0).r;
         if (current_depth > closest_depth) {
             visibility -= 0.16;
         }
@@ -54,7 +54,7 @@ float shadow(vec4 shadow_coords) {
     // return current_depth > closest_depth ? 0.38 : 1.0;
 }
 
-vec3 pointLight(Light light, vec4 shadow_coords, vec3 camera_position, vec3 object_color, float shininess) {
+vec3 pointLight(Light light, sampler2D shadow_map, vec4 shadow_coords, vec3 camera_position, vec3 object_color, float shininess) {
     vec3 light_dir = normalize(-light.direction);
     // vec3 light_dir = normalize(light.position - frag_position);
     vec3 view_dir = normalize(camera_position - frag_position);
@@ -63,7 +63,7 @@ vec3 pointLight(Light light, vec4 shadow_coords, vec3 camera_position, vec3 obje
     float distance = length(light.position - frag_position);
     // float attenuation = 1.0 / (att_constant + att_linear * distance + att_quadratic * distance * distance);
     float attenuation = 1.0;
-    float shadow = shadow(shadow_coords);
+    float shadow = shadow(shadow_map, shadow_coords);
 	vec3 ambient = light_ambient * object_color * attenuation;
     vec3 diffuse = max(dot(frag_normal, light_dir), 0.0) * light.diffuse * object_color * attenuation;
     vec3 specular = pow(max(dot(view_dir, reflect_dir), 0.0), shininess) * light.specular * object_color * attenuation;
@@ -73,7 +73,7 @@ vec3 pointLight(Light light, vec4 shadow_coords, vec3 camera_position, vec3 obje
 void main() {
     vec3 temp = vec3(0.0);
     for (int i = 0; i < lights.length(); i++) {
-        temp += pointLight(lights[i], shadow_coords[i], camera_position, object_color, shininess);
+        temp += pointLight(lights[i], shadowMaps[i], shadow_coords[i], camera_position, object_color, shininess);
     }
     color = vec4(temp, 1.0);
 }

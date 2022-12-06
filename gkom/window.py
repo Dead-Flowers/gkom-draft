@@ -4,6 +4,7 @@ from typing import Any
 
 import moderngl
 import typed_settings as ts
+from moderngl import Framebuffer, Texture
 from moderngl_window import WindowConfig
 from moderngl_window.context.base import KeyModifiers
 from pyrr import Matrix44, Vector3
@@ -86,15 +87,22 @@ class GkomWindowConfig(WindowConfig):
         self.lights_shadow.bind_to_storage_buffer(1)
 
     def init_shadow_map(self):
-        offscreen_size = self.config.shadow_map_resoultion
-        self.offscreen_depth = self.ctx.depth_texture(offscreen_size)
-        self.offscreen_depth.filter = (moderngl.NEAREST, moderngl.NEAREST)
-        self.offscreen_depth.repeat_x = True
-        self.offscreen_depth.repeat_y = True
+        self.depth_textures: list[Texture] = []
+        self.fbos: list[Framebuffer] = []
+        shadow_resolution = self.config.shadow_map_resoultion
 
-        self.offscreen = self.ctx.framebuffer(
-            depth_attachment=self.offscreen_depth,
-        )
+        for _ in range(len(self.config.light)):
+            depth_tex = self.ctx.depth_texture(shadow_resolution)
+            depth_tex.filter = (moderngl.NEAREST, moderngl.NEAREST)
+            depth_tex.repeat_x = True
+            depth_tex.repeat_y = True
+
+            self.depth_textures.append(depth_tex)
+            self.fbos.append(
+                self.ctx.framebuffer(
+                    depth_attachment=depth_tex,
+                )
+            )
 
     def init_uniforms(self):
         self.transform = self.light_prog["transform"]
@@ -103,25 +111,24 @@ class GkomWindowConfig(WindowConfig):
         self.shininess = self.light_prog["shininess"]
         self.shadow_mvp = self.shadow_prog["mvp"]
 
-        self.light_prog["shadowMap"].value = 0
+        self.light_prog["shadowMaps"].value = [(i,) for i in range(10)]
 
     def render(self, time: float, frame_time: float):
         self.ctx.clear(0.4, 0.4, 0.4)
         self.ctx.enable_only(moderngl.DEPTH_TEST | moderngl.CULL_FACE)
 
-        self.model_shadow_mvps: dict[int, bytearray] = {}
+        model_shadow_mvps: dict[int, bytearray] = defaultdict(bytearray)
 
         # Pass 1
-        self.offscreen.clear()
-        self.offscreen.use()
+        for light, fbo in zip(self.lights, self.fbos):
+            fbo.use()
+            fbo.clear()
 
-        for i, model in enumerate(self.models):
-            self.model_shadow_mvps[i] = bytearray()
-            for light in self.lights:
+            for i, model in enumerate(self.models):
                 shadow_mvp = light.transform(Vector3(light.direction)) * model.transform
                 self.shadow_mvp.write(shadow_mvp.astype("f4"))
 
-                self.model_shadow_mvps[i] += (
+                model_shadow_mvps[i] += (
                     (BIAS_MATRIX * shadow_mvp).astype("f4").tobytes()
                 )
 
@@ -137,9 +144,10 @@ class GkomWindowConfig(WindowConfig):
             self.color.value = model.color
             self.transform.write((self.camera.transform * model.transform).astype("f4"))
             self.shininess.value = model.shininess
-            self.lights_shadow.write(self.model_shadow_mvps[i])
+            self.lights_shadow.write(model_shadow_mvps[i])
 
-            self.offscreen_depth.use(location=0)
+            for i, tex in enumerate(self.depth_textures):
+                tex.use(location=i)
 
             model.light_vao.render(moderngl.TRIANGLES)
 
