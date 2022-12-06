@@ -7,6 +7,7 @@ import typed_settings as ts
 from moderngl import Framebuffer, Texture
 from moderngl_window import WindowConfig
 from moderngl_window.context.base import KeyModifiers
+from PIL import Image
 from pyrr import Matrix44, Vector3
 
 from gkom.camera import Camera
@@ -34,6 +35,7 @@ class GkomWindowConfig(WindowConfig):
     resource_dir = resource_root_dir / "models"
     shader_dir = resource_root_dir / "shaders"
     config_path = resource_root_dir / "config.toml"
+    shadow_map_dir = (Path(__file__).parent.parent / "shadow-maps").resolve()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -42,6 +44,7 @@ class GkomWindowConfig(WindowConfig):
         self.keys: dict[Any, bool] = defaultdict(lambda: False)
         self.models: list[Model] = []
         self.lights: list[Light] = []
+        self.captured_shadow_maps = False
 
         shaders = get_shaders(self.shader_dir)
         self.light_prog = shaders["phong"].create_program(self.ctx)
@@ -151,7 +154,13 @@ class GkomWindowConfig(WindowConfig):
 
             model.light_vao.render(moderngl.TRIANGLES)
 
-        # Pass3 render shoadws
+        if not self.captured_shadow_maps:
+            self.captured_shadow_maps = True
+            self.shadow_map_dir.mkdir(parents=True, exist_ok=True)
+            for i, tex in enumerate(self.depth_textures):
+                Image.frombytes("F", tex.size, tex.read()).convert("L").save(
+                    self.shadow_map_dir / f"{i}.png"
+                )
 
     def key_event(self, key: Any, action: Any, modifiers: KeyModifiers):
         if action == self.wnd.keys.ACTION_PRESS:
