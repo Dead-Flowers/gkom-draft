@@ -9,6 +9,9 @@ from moderngl_window import WindowConfig
 from moderngl_window.context.base import KeyModifiers
 from PIL import Image
 from pyrr import Matrix44, Vector3
+import numpy as np
+
+import sys
 
 from gkom.camera import Camera
 from gkom.config import Config
@@ -95,7 +98,7 @@ class GkomWindowConfig(WindowConfig):
         shadow_resolution = self.config.shadow_map_resoultion
 
         for _ in range(len(self.config.light)):
-            depth_tex = self.ctx.depth_texture(shadow_resolution)
+            depth_tex = self.ctx.depth_texture(shadow_resolution, alignment=4)
             depth_tex.filter = (moderngl.NEAREST, moderngl.NEAREST)
             depth_tex.repeat_x = True
             depth_tex.repeat_y = True
@@ -158,7 +161,10 @@ class GkomWindowConfig(WindowConfig):
             self.captured_shadow_maps = True
             self.shadow_map_dir.mkdir(parents=True, exist_ok=True)
             for i, tex in enumerate(self.depth_textures):
-                Image.frombytes("F", tex.size, tex.read()).convert("L").save(
+                temp_v = np.frombuffer(tex.read(), dtype="f4")
+
+
+                Image.frombytes("CMYK", tex.size, temp_v).convert("L").save(
                     self.shadow_map_dir / f"{i}.png"
                 )
 
