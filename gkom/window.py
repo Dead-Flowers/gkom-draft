@@ -1,17 +1,16 @@
+import sys
 from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
 import moderngl
+import numpy as np
 import typed_settings as ts
 from moderngl import Framebuffer, Texture
 from moderngl_window import WindowConfig
 from moderngl_window.context.base import KeyModifiers
 from PIL import Image
 from pyrr import Matrix44, Vector3
-import numpy as np
-
-import sys
 
 from gkom.camera import Camera
 from gkom.config import Config
@@ -161,10 +160,9 @@ class GkomWindowConfig(WindowConfig):
             self.captured_shadow_maps = True
             self.shadow_map_dir.mkdir(parents=True, exist_ok=True)
             for i, tex in enumerate(self.depth_textures):
-                temp_v = np.frombuffer(tex.read(), dtype="f4")
+                temp_v = (np.frombuffer(tex.read(), dtype="f4") * 255).astype(np.uint8)
 
-
-                Image.frombytes("CMYK", tex.size, temp_v).convert("L").save(
+                Image.frombytes("L", tex.size, temp_v).save(
                     self.shadow_map_dir / f"{i}.png"
                 )
 
