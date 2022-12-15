@@ -47,7 +47,7 @@ float shadow(sampler2D shadow_map, vec4 shadow_coords) {
     for (int i=0; i<4; i++) {
         float closest_depth = texture(shadow_map, proj_coords.xy + poissonDisk[i]/800.0).r;
         if (current_depth > closest_depth) {
-            visibility -= 0.16;
+            visibility -= 0.23;
         }
     }
     return visibility;

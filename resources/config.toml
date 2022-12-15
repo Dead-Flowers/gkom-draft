@@ -1,23 +1,86 @@
 [gkom]
 shadow_map_resoultion = [2048, 2048]
 
+# floor
 [[gkom.object]]
 model = "plane"
 scale = [10.0, 10.0, 10.0]
 color = [0.0, 0.5, 0.0]
 
+
+
+# TREE
+# log
 [[gkom.object]]
 model = "cylinder"
 position = [2.0, 2.5, 2.0]
 scale = [1.0, 5.0, 1.0]
 color = [0.545, 0.271, 0.075]
-
+# leafs
 [[gkom.object]]
 model = "sphere"
 position = [2.0, 6.0, 2.0]
 scale = [2.0, 2.0, 2.0]
 color = [0.0, 0.5, 0.0]
 
+
+# HOUSE
+# building
+[[gkom.object]]
+model = "cube"
+position = [4.0, 1.0, -4.0]
+color = [1, 1, 0]
+# roof
+[[gkom.object]]
+model = "cone"
+position = [4.0, 3.0, -4.0]
+color = [1, 0, 0]
+
+
+
+# ROBOT
+# left leg
+[[gkom.object]]
+model = "cube"
+position = [-6.2, 1.0, 6.1]
+scale = [0.2, 0.5, 0.2]
+color = [0.0, 0.8, 0.3]
+# leg right
+[[gkom.object]]
+model = "cube"
+position = [-6.8, 1.0, 6.1]
+scale = [0.2, 0.5, 0.2]
+color = [1.0, 0.0, 0.0]
+# torso
+[[gkom.object]]
+model = "cube"
+position = [-6.5, 2.5, 6.05]
+scale = [0.55, 1.0, 0.25]
+color = [0.0, 0.0, 0.1]
+# right arm
+[[gkom.object]]
+model = "cube"
+position = [-7.2, 3.0, 6.05]
+scale = [0.2, 0.5, 0.2]
+color = [1.0, 0.0, 0.0]
+rotation = [0.0, 0.5, 0.0]
+# left arm
+[[gkom.object]]
+model = "cube"
+position = [-5.8, 3.0, 6.05]
+scale = [0.2, 0.5, 0.2]
+color = [1.0, 0.0, 0.0]
+rotation = [0.0, -0.5, 0.0]
+# left arm
+[[gkom.object]]
+model = "cube"
+position = [-6.5, 3.75, 6.05]
+scale = [0.3, 0.3, 0.3]
+color = [1.0, 0.0, 0.0]
+rotation = [0.0, 0.0, 0.0]
+
+
+# random items
 [[gkom.object]]
 model = "cube"
 position = [-3.0, 1.0, -3.0]
@@ -29,25 +92,44 @@ position = [-3.0, 6.0, -3.0]
 color = [0.5, 0.5, 0.5]
 scale = [3.0, 0.5, 3.0]
 
+
+
+# light 1
 [[gkom.light]]
 type = "point"
 position = [-10.0, 12.0, 10.0]
 direction = [-1.0, -7.5, -1.0]
 
+# light 1 object
 [[gkom.object]]
 model = "sphere"
 position = [-10.0, 12.0, 10.0]
 scale = [0.4, 0.4, 0.4]
 color = [1.0, 1.0, 0.0]
 
+# light 2
 [[gkom.light]]
 type = "point"
 position = [10.0, 12.0, 10.0]
 direction = [1.0, -7.5, -1.0]
 
+# light 2 object
 [[gkom.object]]
 model = "sphere"
 position = [10.0, 12.0, 10.0]
+scale = [0.4, 0.4, 0.4]
+color = [1.0, 1.0, 0.0]
+
+# light 3
+[[gkom.light]]
+type = "point"
+position = [30.0, 20.0, 0.0]
+direction = [-30.0, -20.0, 0.0]
+
+# light 3 object
+[[gkom.object]]
+model = "sphere"
+position = [30.0, 20.0, 0.0]
 scale = [0.4, 0.4, 0.4]
 color = [1.0, 1.0, 0.0]
 
