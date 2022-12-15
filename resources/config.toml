@@ -62,21 +62,21 @@ color = [0.0, 0.0, 0.1]
 model = "cube"
 position = [-7.2, 3.0, 6.05]
 scale = [0.2, 0.5, 0.2]
-color = [1.0, 0.0, 0.0]
+color = [1.0, 0.8, 0.4]
 rotation = [0.0, 0.5, 0.0]
 # left arm
 [[gkom.object]]
 model = "cube"
 position = [-5.8, 3.0, 6.05]
 scale = [0.2, 0.5, 0.2]
-color = [1.0, 0.0, 0.0]
+color = [1.0, 0.0, 1.0]
 rotation = [0.0, -0.5, 0.0]
 # left arm
 [[gkom.object]]
 model = "cube"
 position = [-6.5, 3.75, 6.05]
 scale = [0.3, 0.3, 0.3]
-color = [1.0, 0.0, 0.0]
+color = [0.8, 0.0, 0.5]
 rotation = [0.0, 0.0, 0.0]
 
 
