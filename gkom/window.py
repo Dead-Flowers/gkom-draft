@@ -116,7 +116,7 @@ class GkomWindowConfig(WindowConfig):
         self.shininess = self.light_prog["shininess"]
         self.shadow_mvp = self.shadow_prog["mvp"]
 
-        self.light_prog["shadowMaps"].value = [(i,) for i in range(10)]
+        self.light_prog["shadowMaps"].value = [i for i in range(10)]
 
     def render(self, time: float, frame_time: float):
         self.ctx.clear(0.4, 0.4, 0.4)
